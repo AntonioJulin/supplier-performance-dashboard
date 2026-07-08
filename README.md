@@ -119,7 +119,7 @@ other's views.
 
 - **Location-level rollups likely reflect supplier mix, not a true location effect.**     
   `summary_by_location` groups defect rate and manufacturing cost by
-  warehouse location — but these are properties of how a product was made,
+  warehouse location, but these are properties of how a product was made,
   not where it's stored. Any pattern by location is more likely explained by
   which suppliers happen to ship to that location, rather than something about
   the location itself. Shipping cost is the one metric in this rollup that is
