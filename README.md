@@ -9,6 +9,18 @@ denormalized reporting patterns.
 
 PostgreSQL · SQL · Views · Window Functions · CTEs
 
+## Techniques Demonstrated
+
+- Multi-table `INNER JOIN`s (up to 5 tables in one query)
+- `GROUP BY` with multiple simultaneous aggregates
+- Window functions: `RANK() OVER (ORDER BY ...)` for supplier rankings
+- Common Table Expressions (`WITH`) for readable, staged logic
+- Layered views for maintainable, reusable reporting pipelines
+- Conditional aggregation via `FILTER (WHERE ...)` (fail rate calculation)
+- Correlated subqueries (comparing a row's value against a table-wide average)
+- Weighted composite scoring across multiple normalized business metrics
+- Deliberate denormalization of a normalized schema for reporting purposes
+
 ## Overview
 
 This project answers three practical supply chain questions:
@@ -24,6 +36,15 @@ A fourth component builds a fully denormalized reporting view across all five
 source tables, then rolls it up by location and by supplier — deliberately
 reversing the normalized schema to demonstrate why (and when) denormalization
 is useful for reporting.
+
+## Sample Insights
+
+- **Supplier 4 shows compounding cost and quality issues**
+  a supplier score 12% worse than the next-worst supplier, driven by manufacturing costs 38% above the next costliest supplier, plus a 66% inspection fail rate (next-highest supplier doesn't break 40%). Other metrics are in line with peers, suggesting this is a supplier-specific problem rather than a broader pattern — worth flagging for a dedicated improvement plan or audit in real world scenario.
+- **11 SKUs have insufficient stock levels to fulfill demand over lead time**
+  In real world scenario overhauling order policies/safety stock etc. would be necessary as multiple SKUs can't even fill 25% of demand over lead time (worst one is under 4% fulfillment)
+- **Defect rates seem to be unrelated to supplier**
+  A single supplier doesn't have noticeably more SKUs with an above average defect rate, but some SKUs have a defect rate over twice as high as average. Merits process improvement on a per-SKU basis
 
 ## Data Model
 
@@ -74,18 +95,6 @@ independently (each is self-contained and drops/recreates its own views):
 Then run any of `01`–`04` in any order, since none of them depend on each
 other's views.
 
-## Techniques Demonstrated
-
-- Multi-table `INNER JOIN`s (up to 5 tables in one query)
-- `GROUP BY` with multiple simultaneous aggregates
-- Window functions: `RANK() OVER (ORDER BY ...)` for supplier rankings
-- Common Table Expressions (`WITH`) for readable, staged logic
-- Layered views for maintainable, reusable reporting pipelines
-- Conditional aggregation via `FILTER (WHERE ...)` (fail rate calculation)
-- Correlated subqueries (comparing a row's value against a table-wide average)
-- Weighted composite scoring across multiple normalized business metrics
-- Deliberate denormalization of a normalized schema for reporting purposes
-
 ## Key Design Decisions & Assumptions
 
 - **`weighted_assessment` combines defect rate, manufacturing cost, shipping
@@ -105,15 +114,6 @@ other's views.
   practical influence on the final score than the stated weight alone would
   suggest. A min-max normalization step (rescaling each metric to 0–100 before
   weighting) would make the weights behave as intended.
-
-## Sample Insights
-
-- **Supplier 4 shows compounding cost and quality issues**
-  a supplier score 12% worse than the next-worst supplier, driven by manufacturing costs 38% above the next costliest supplier, plus a 66% inspection fail rate (next-highest supplier doesn't break 40%). Other metrics are in line with peers, suggesting this is a supplier-specific problem rather than a broader pattern — worth flagging for a dedicated improvement plan or audit in real world scenario.
-- **11 SKUs have insufficient stock levels to fulfill demand over lead time**
-  In real world scenario overhauling order policies/safety stock etc. would be necessary as multiple SKUs can't even fill 25% of demand over lead time (worst one is under 4% fulfillment)
-- **Defect rates seem to be unrelated to supplier**
-  A single supplier doesn't have noticeably more SKUs with an above average defect rate, but some SKUs have a defect rate over twice as high as average. Merits process improvement on a per-SKU basis
 
 ## Limitations
 
