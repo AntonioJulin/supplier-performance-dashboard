@@ -40,7 +40,7 @@ is useful for reporting.
 ## Sample Insights
 
 - **Supplier 4 shows compounding cost and quality issues.**
-  A supplier score 12% worse than the next-worst supplier, driven by manufacturing costs 38% above the next costliest supplier, plus a 66% inspection fail rate (next-highest supplier doesn't break 40%). Other metrics are in line with peers, suggesting this is a supplier-specific problem rather than a broader pattern — worth flagging for a dedicated improvement plan or audit in real world scenario.
+  A supplier score 12% worse than the next-worst supplier, driven by manufacturing costs 38% above the next costliest supplier, plus a 66% inspection fail rate (next-highest supplier doesn't break 40%). Other metrics are in line with peers, suggesting this is a supplier-specific problem rather than a broader pattern; worth flagging for a dedicated improvement plan or audit in real world scenario.
 - **11 SKUs have insufficient stock levels to fulfill demand over lead time.**
   In real world scenario overhauling order policies/safety stock etc. would be necessary as multiple SKUs can't even fill 25% of demand over lead time (worst one is under 4% fulfillment)
 - **Defect rates seem to be unrelated to supplier.**
