@@ -7,7 +7,7 @@ denormalized reporting patterns.
 
 ## Tech Stack
 
-PostgreSQL · SQL · Views · Window Functions · CTEs
+SQL
 
 ## Techniques Demonstrated
 
